@@ -1,0 +1,24 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'hashicorp/terraform'
+ 
+steps:
+- script: |
+    # Install Python
+    sudo apt update
+    
+ 
+    # Clone your GitHub repository
+    git clone https://github.com/rainrajon/new_one.git
+ 
+    # Change directory to your repository
+    # cd your-repo
+ 
+    # Run the Python script
+    az login
+    terraform init
+    terraform plan -auto-approve
+    terraform apply -auto-approve
+  displayName: 'Terraform code'
