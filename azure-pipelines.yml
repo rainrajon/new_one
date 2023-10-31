@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'zenika/terraform-azure-cli'
+  vmImage: 'zenika/terraform-azure-cli:latest'
  
 steps:
 - script: |
