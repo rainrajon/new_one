@@ -2,11 +2,15 @@ trigger:
 - main
 
 pool:
-  vmImage: 'zenika/terraform-azure-cli:latest'
+  vmImage: 'ubuntu-latest'
  
 steps:
 - script: |
-    # Install Python
+    sudo apt-get install unzip
+    wget https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
+    unzip terraform_1.6.2_linux_amd64.zip
+    sudo mv terraform /usr/local/bin/
+    terraform --version 
     sudo apt update
     
  
@@ -17,7 +21,6 @@ steps:
     # cd your-repo
  
     # Run the Python script
-    az login
     terraform init
     terraform plan -auto-approve
     terraform apply -auto-approve
