@@ -21,7 +21,8 @@ steps:
     # cd your-repo
  
     # Run the Python script
+    az login
     terraform init
-    terraform plan -auto-approve
-    terraform apply -auto-approve
+    terraform plan -out=tfplan
+    terraform apply -auto-approve tfplan
   displayName: 'Terraform code'
