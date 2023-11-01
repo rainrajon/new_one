@@ -6,14 +6,9 @@ pool:
  
 steps:
 - script: |
-    sudo apt-get install unzip
-    wget https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
-    unzip terraform_1.6.2_linux_amd64.zip
-    sudo mv terraform /usr/local/bin/
     terraform --version 
     sudo apt update
     
- 
     # Clone your GitHub repository
     git clone https://github.com/rainrajon/new_one.git
  
@@ -21,8 +16,10 @@ steps:
     # cd your-repo
  
     # Run the Python script
-    az login
+    az account set --subscription 992de8fd-65e6-4178-8d06-5f7955ad4425
+    az login --service-principal -u 4de44e41-0451-470a-9643-c04a3978db13 -p _yN8Q~foCfmhjjwOVWOiDEkRyuLAWvoGQT1JDbgJ --tenant aad3cd3b-f269-4d1d-abea-18ea92f2ce38
+
     terraform init
-    terraform plan -out=tfplan
-    terraform apply -auto-approve tfplan
+    terraform plan -out main.tfplan
+    terraform apply main.tfplan
   displayName: 'Terraform code'
