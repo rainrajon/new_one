@@ -67,7 +67,7 @@ resource "azurerm_cognitive_account" "computer_vision" {
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ComputerVision"
   
-  sku_name = "S1"
+  sku_name = "S0"
   custom_subdomain_name = var.computer_vision_name
   network_acls {
     default_action             = "Deny"
