@@ -49,17 +49,27 @@ resource "azurerm_storage_account" "adls_storage_account" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "GRS"
-
-  network_rules {
-    default_action             = "Deny"
-    ip_rules                   = ["136.226.0.0/16","165.225.0.0/16"]
-    virtual_network_subnet_ids = [azurerm_subnet.subnet_storage.id]
-  }
-
   tags = {
-    environment = "NonProd",
-    product = "Storage Conditions"
+    CostCenter : "20060000"
+    Application : "Windows"
+    Product : "Storage Conditions"
+    SupportTeam : "team_sc@fdbhealth.com"
+    enviroment = "NonProd"
   }
+}
+resource "azurerm_storage_container" "container" {
+ name                  = var.container_name
+ storage_account_name  = azurerm_storage_account.adls_storage_account.name
+ container_access_type = "private"
+}
+resource "azurerm_storage_account_network_rules" "netrules" {
+  storage_account_id = azurerm_storage_account.adls_storage_account.id
+  default_action = "Deny"
+  ip_rules                   = ["136.226.0.0/16","165.225.0.0/16","167.103.0.0/16"]
+  virtual_network_subnet_ids = [azurerm_subnet.subnet_storage.id]
+  depends_on = [
+    azurerm_storage_container.container
+  ]
 }
 resource "azurerm_cognitive_account" "computer_vision" {
   name                = var.computer_vision_name
@@ -67,17 +77,21 @@ resource "azurerm_cognitive_account" "computer_vision" {
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "ComputerVision"
   
-  sku_name = "S0"
+  sku_name = "S1"
   custom_subdomain_name = var.computer_vision_name
   network_acls {
     default_action             = "Deny"
-    ip_rules                   = ["136.226.0.0/16","165.225.0.0/16"]
+    ip_rules                   = ["136.226.0.0/16","165.225.0.0/16","167.103.0.0/16"]
     virtual_network_rules {
       subnet_id = azurerm_subnet.subnet_computer_vision.id
       ignore_missing_vnet_service_endpoint = false
     }
   }
   tags = {
+    CostCenter : "20060000"
+    Application : "Windows"
+    Product : "Storage Conditions"
+    SupportTeam : "team_sc@fdbhealth.com"
     enviroment = "NonProd"
   }
 }
@@ -91,13 +105,38 @@ resource "azurerm_cognitive_account" "openai" {
   custom_subdomain_name = var.openai_name
   network_acls {
     default_action             = "Deny"
-    ip_rules                   = ["136.226.0.0/16","165.225.0.0/16"]
+    ip_rules                   = ["136.226.0.0/16","165.225.0.0/16","167.103.0.0/16"]
     virtual_network_rules {
       subnet_id = azurerm_subnet.subnet_openai.id
       ignore_missing_vnet_service_endpoint = false
     }
   }
   tags = {
+    CostCenter : "20060000"
+    Application : "Windows"
+    Product : "Storage Conditions"
+    SupportTeam : "team_sc@fdbhealth.com"
     enviroment = "NonProd"
   }
+}
+resource "azurerm_cognitive_deployment" "openai_deployment" {
+  name                 = var.deployment_name
+  cognitive_account_id = azurerm_cognitive_account.openai.id
+  model {
+    format  = "OpenAI"
+    name    = "gpt-35-turbo"
+    version = "0301"
+  }
+
+  scale {
+    type = "Standard"
+    capacity = "120"
+  }
+}
+resource "azurerm_container_registry" "acr" {
+  name                = var.registry_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  sku                 = "Basic"
+  admin_enabled       = true
 }
