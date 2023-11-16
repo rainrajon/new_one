@@ -1,7 +1,7 @@
 variable "resource_group_name" {
  description = "Name of the Azure resource group"
  type        = string
- default     = "rg-20060000-storageconditions-NonProd"
+ default     = "rg-20060000-storageconditions-NonProd1"
 }
 variable "resource_group_location" {
  description = "Location for the Azure resource group"
@@ -11,7 +11,7 @@ variable "resource_group_location" {
 variable "virtual_network_name" {
  description = "Name of the Azure Virtual Network"
  type        = string
- default     = "vnet-10.0.0.0_16-eastus"
+ default     = "vnet-10.0.0.0_16-eastus1"
 }
 variable "address_space" {
  description = "Address space for the Virtual Network"
@@ -71,15 +71,25 @@ variable "subnet_container_instance_cidr" {
 variable "adls_account_name" {
  description = "Name of adls storage account"
  type        = string
- default     = "storagescnonprod"
+ default     = "storagescnonprod1"
 }
 variable "computer_vision_name" {
  description = "Name of computer vision resource"
  type        = string
- default     = "visionaiscnonprod1"
+ default     = "visionaiscnonprod2"
 }
 variable "openai_name" {
  description = "Name of openai resource"
  type        = string
- default     = "openai-sc-NonProd"
+ default     = "openai-sc-NonProd1"
+}
+variable "container_name" {
+ description = "Name of container resource"
+ type        = string
+ default     = "storageobj1"
+}
+variable "registry_name" {
+ description = "Name of container registry"
+ type        = string
+ default     = "acrscnonprod1"
 }
